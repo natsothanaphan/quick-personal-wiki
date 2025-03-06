@@ -5,6 +5,8 @@
   word-break: break-word;
 }
 .page-data > pre {
+  margin: 20px 0;
+  text-align: left;
   white-space: pre-wrap;
 }
 

@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import './ContentPage.css';
 import { BackButton, ReloadButton, EditButton, SaveButton, CancelButton } from './Buttons';
 import api from '../api.js';
+import markup from '../markup/markup.js';
 import { alertAndLogErr } from '../utils.js';
 
 const ContentPage = ({ user, pageInfo, setPageInfo, wikisData, setWikisData }) => {
@@ -66,13 +67,18 @@ const ContentPage = ({ user, pageInfo, setPageInfo, wikisData, setWikisData }) =
   useEffect(() => { setPagesTitleToId(Object.fromEntries(Object.entries(_pages ?? {}).map(([id, page]) => [page.title, id]))); }, [_pages]);
   useEffect(() => { setPageData({title: _page?.title ?? '', content: _page?.content ?? ''}); }, [_page]);
 
+  const markupContent = useMemo(() => markup.parse(pageData.content, handleSelectPage), [pageData.content]);
+
   return <>
     <div>{backButton}{' '}<ReloadButton onClick={fetchPage} /></div>
     <h2>{pageData.title}</h2>
     <div className='page-data'>
       {loading && <p>Loading...</p>}
       {!loading && !editingData.editing && <>
-        <p>{pageData.content}</p>
+        <pre>{markupContent.map((part) => <>
+          {part.type === 'text' && part.text}
+          {part.type === 'link' && <a href='#' onClick={(e) => handleSelectPage(e, part.url)} title={part.url}>{part.text}</a>}
+        </>)}</pre>
         <EditButton onClick={handleEdit} />
       </>}
       {!loading && editingData.editing && <form onSubmit={handleSave}>
