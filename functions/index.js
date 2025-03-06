@@ -148,6 +148,19 @@ app.post('/api/wikis/:wikiId/pages', async (req, res) => {
     return res.status(500).json({ error: 'Internal server error' });
   }
 });
+app.get('/api/wikis/:wikiId/pages/:pageId', async (req, res) => {
+  const uid = req.uid;
+  const { wikiId, pageId } = req.params;
+  try {
+    const pageRef = getPagesColl(uid, wikiId).doc(pageId);
+    const pageDoc = await pageRef.get();
+    if (!pageDoc.exists) return res.status(404).json({ error: 'Page not found' });
+    return res.json(docToData(pageDoc));
+  } catch (err) {
+    logger.error('Error get /api/wikis/:wikiId/pages/:pageId:', err);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
 app.patch('/api/wikis/:wikiId/pages/:pageId', async (req, res) => {
   const uid = req.uid;
   const { wikiId, pageId } = req.params;

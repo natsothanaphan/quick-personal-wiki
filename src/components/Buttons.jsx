@@ -1,10 +1,10 @@
-const BackButton = ({ onClick }) => <button onClick={onClick} title='Back'>⬅️</button>;
-const ReloadButton = ({ onClick }) => <button onClick={onClick} title='Reload'>🔄</button>;
-const EditButton = ({ onClick }) => <button onClick={onClick} title='Edit'>✏️</button>;
-const DeleteButton = ({ onClick }) => <button onClick={onClick} title='Delete'>🗑️</button>;
-const SaveButton = ({ onClick }) => <button onClick={onClick} title='Save'>💾</button>;
-const CancelButton = ({ onClick }) => <button onClick={onClick} title='Cancel'>❌</button>;
-const CreateButton = () => <button type='submit' title='Create'>✨</button>;
+const BackButton = (props) => <button {...props} title='Back'>⬅️</button>;
+const ReloadButton = (props) => <button {...props} title='Reload'>🔄</button>;
+const EditButton = (props) => <button {...props} title='Edit'>✏️</button>;
+const DeleteButton = (props) => <button {...props} title='Delete'>🗑️</button>;
+const SaveButton = (props) => <button {...props} title='Save'>💾</button>;
+const CancelButton = (props) => <button {...props} title='Cancel'>❌</button>;
+const CreateButton = (props) => <button {...props} title='Create'>✨</button>;
 
 export {
   BackButton, ReloadButton,

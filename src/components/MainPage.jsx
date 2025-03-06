@@ -69,8 +69,9 @@ const MainPage = ({ user, pageInfo, setPageInfo, wikisData, setWikisData }) => {
     }
   };
 
-  useEffect(() => { if (wikisData.wikis === undefined) fetchWikis(); }, [wikisData]);
-  useEffect(() => { setFullWikis(Object.values(wikisData.wikis ?? {}).sort((a, b) => a.name.localeCompare(b.name))); }, [wikisData]);
+  const _wikis = wikisData.wikis;
+  useEffect(() => { if (_wikis === undefined) fetchWikis(); }, [_wikis]);
+  useEffect(() => { setFullWikis(Object.values(_wikis ?? {}).sort((a, b) => a.name.localeCompare(b.name))); }, [_wikis]);
   useEffect(() => { setWikis(fullWikis.filter((wiki) => wiki.name.includes(search))); }, [fullWikis, search]);
 
   return <>
@@ -101,7 +102,7 @@ const MainPage = ({ user, pageInfo, setPageInfo, wikisData, setWikisData }) => {
       <form onSubmit={handleCreateWiki}>
         <input type='text' placeholder='name' value={newWiki.name}
           onChange={(e) => setNewWiki({...newWiki, name: e.target.value})} required />
-        <CreateButton />
+        <CreateButton type='submit' />
       </form>
     </div>
   </>;

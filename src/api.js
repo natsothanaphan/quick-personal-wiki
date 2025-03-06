@@ -108,6 +108,20 @@ const createPage = async (token, wikiId, { title, content }) => {
   console.log('api createPage done', { data });
   return data;
 };
+const fetchPage = async (token, wikiId, pageId) => {
+  console.log('api fetchPage start', { wikiId, pageId });
+  const resp = await fetch(`/api/wikis/${wikiId}/pages/${pageId}`, {
+    headers: authHeader(token),
+  });
+  if (!resp.ok) {
+    const errData = await resp.json();
+    console.log('api fetchPage error', { errData });
+    throw new Error(errData.error || 'Failed api fetchPage');
+  }
+  const data = await resp.json();
+  console.log('api fetchPage done', { data });
+  return data;
+};
 const updatePage = async (token, wikiId, pageId, { title, content }) => {
   console.log('api updatePage start', { wikiId, pageId, title, content });
   const resp = await fetch(`/api/wikis/${wikiId}/pages/${pageId}`, {
@@ -143,5 +157,5 @@ export default {
   fetchWikis,
   createWiki, updateWiki, deleteWiki,
   fetchPages,
-  createPage, updatePage, deletePage,
+  createPage, fetchPage, updatePage, deletePage,
 };

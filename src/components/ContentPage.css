@@ -1,0 +1,22 @@
+.page-data {
+  width: 100%;
+  max-width: 960px;
+  margin: 2px 0;
+  word-break: break-word;
+}
+.page-data > pre {
+  white-space: pre-wrap;
+}
+
+.page-data > form {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.page-data > form > textarea {
+  width: calc(100% - 2.4em - 2px);
+  max-width: calc(960px - 2.4em - 2px);
+}
+.page-data > form > div {
+  align-self: flex-end;
+}

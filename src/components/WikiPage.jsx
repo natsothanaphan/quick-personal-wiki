@@ -8,8 +8,7 @@ const WikiPage = ({ user, pageInfo, setPageInfo, wikisData, setWikisData }) => {
   const backButton = <BackButton onClick={() => setPageInfo({page: 'main'})} />;
 
   const { wikiId } = pageInfo;
-  const wiki = wikisData.wikis?.[wikiId];
-  if (!wiki) return <>
+  if (wikisData.wikis?.[wikiId] === undefined) return <>
     {backButton}
     <p>Wiki not found!</p>
   </>;
@@ -41,7 +40,7 @@ const WikiPage = ({ user, pageInfo, setPageInfo, wikisData, setWikisData }) => {
 
   const handleSelectPage = (e, pageId) => {
     e.preventDefault();
-    setPageInfo({page: 'page', pageId});
+    setPageInfo({page: 'content', wikiId, pageId});
   };
   const handleEditPage = (page) => { setEditingPage({id: page.id, title: page.title}); };
   const handleDeletePage = async (pageId, title) => {
@@ -79,13 +78,14 @@ const WikiPage = ({ user, pageInfo, setPageInfo, wikisData, setWikisData }) => {
     }
   };
 
-  useEffect(() => { if (wikisData.wikis?.[wikiId]?.pages === undefined) fetchPages(); }, [wikisData]);
-  useEffect(() => { setFullPages(Object.values(wikisData.wikis?.[wikiId]?.pages ?? {}).sort((a, b) => a.title.localeCompare(b.title))); }, [wikisData]);
+  const _pages = wikisData.wikis?.[wikiId]?.pages;
+  useEffect(() => { if (_pages === undefined) fetchPages(); }, [_pages]);
+  useEffect(() => { setFullPages(Object.values(_pages ?? {}).sort((a, b) => a.title.localeCompare(b.title))); }, [_pages]);
   useEffect(() => { setPages(fullPages.filter((page) => page.title.includes(search))); }, [fullPages, search]);
 
   return <>
     <div>{backButton}{' '}<ReloadButton onClick={fetchPages} /></div>
-    <h2>{wiki.name}</h2>
+    <h2>{wikisData.wikis?.[wikiId]?.name ?? ''}</h2>
     <div className='pages-search'>
       <input type='text' value={search} onChange={(e) => setSearch(e.target.value)} />
     </div>
@@ -112,7 +112,7 @@ const WikiPage = ({ user, pageInfo, setPageInfo, wikisData, setWikisData }) => {
       <form onSubmit={handleCreatePage}>
         <input type='text' placeholder='title' value={newPage.title}
           onChange={(e) => setNewPage({...newPage, title: e.target.value})} required />
-        <CreateButton />
+        <CreateButton type='submit' />
       </form>
     </div>
   </>;
