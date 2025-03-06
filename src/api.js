@@ -31,7 +31,7 @@ const fetchWikis = async (token) => {
   return data;
 };
 
-const createWiki = async (token, name) => {
+const createWiki = async (token, { name }) => {
   console.log('api createWiki start', { name });
   const resp = await fetch(`/api/wikis`, {
     method: 'POST',
@@ -47,7 +47,7 @@ const createWiki = async (token, name) => {
   console.log('api createWiki done', { data });
   return data;
 };
-const updateWiki = async (token, wikiId, name) => {
+const updateWiki = async (token, wikiId, { name }) => {
   console.log('api updateWiki start', { wikiId, name });
   const resp = await fetch(`/api/wikis/${wikiId}`, {
     method: 'PATCH',
@@ -92,7 +92,7 @@ const fetchPages = async (token, wikiId) => {
   return data;
 };
 
-const createPage = async (token, wikiId, title, content) => {
+const createPage = async (token, wikiId, { title, content }) => {
   console.log('api createPage start', { wikiId, title, content });
   const resp = await fetch(`/api/wikis/${wikiId}/pages`, {
     method: 'POST',
@@ -108,7 +108,7 @@ const createPage = async (token, wikiId, title, content) => {
   console.log('api createPage done', { data });
   return data;
 };
-const updatePage = async (token, wikiId, pageId, title, content) => {
+const updatePage = async (token, wikiId, pageId, { title, content }) => {
   console.log('api updatePage start', { wikiId, pageId, title, content });
   const resp = await fetch(`/api/wikis/${wikiId}/pages/${pageId}`, {
     method: 'PATCH',

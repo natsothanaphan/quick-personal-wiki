@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { ReloadButton, EditButton, DeleteButton, SaveButton, CancelButton, CreateButton } from './Buttons';
 import './MainPage.css';
 import api from '../api.js';
 import { alertAndLogErr } from '../utils.js';
@@ -47,7 +48,7 @@ const MainPage = ({ user, pageInfo, setPageInfo, wikisData, setWikisData }) => {
   const handleSaveWiki = async (wikiId) => {
     try {
       const idToken = await user.getIdToken();
-      await api.updateWiki(idToken, wikiId, editingWiki.name);
+      await api.updateWiki(idToken, wikiId, { name: editingWiki.name });
       setEditingWiki({id: null, name: ''});
       fetchWikis();
     } catch (err) {
@@ -60,7 +61,7 @@ const MainPage = ({ user, pageInfo, setPageInfo, wikisData, setWikisData }) => {
     e.preventDefault();
     try {
       const idToken = await user.getIdToken();
-      await api.createWiki(idToken, newWiki.name);
+      await api.createWiki(idToken, { name: newWiki.name });
       setNewWiki({name: ''});
       fetchWikis();
     } catch (err) {
@@ -68,11 +69,12 @@ const MainPage = ({ user, pageInfo, setPageInfo, wikisData, setWikisData }) => {
     }
   };
 
+  useEffect(() => { if (wikisData.wikis === undefined) fetchWikis(); }, [wikisData]);
   useEffect(() => { setFullWikis(Object.values(wikisData.wikis ?? {}).sort((a, b) => a.name.localeCompare(b.name))); }, [wikisData]);
   useEffect(() => { setWikis(fullWikis.filter((wiki) => wiki.name.includes(search))); }, [fullWikis, search]);
-  useEffect(() => { if (!fullWikis.length) fetchWikis(); }, []);
 
   return <>
+    <ReloadButton onClick={fetchWikis} />
     <div className='wikis-search'>
       <input type='text' value={search} onChange={(e) => setSearch(e.target.value)} />
     </div>
@@ -81,15 +83,15 @@ const MainPage = ({ user, pageInfo, setPageInfo, wikisData, setWikisData }) => {
       {!loading && <ul>{wikis.map((wiki) => <li key={wiki.id}>
         {editingWiki.id !== wiki.id && <>
           <a href='#' onClick={(e) => handleSelectWiki(e, wiki.id)}>{wiki.name}</a>{' '}
-          <button onClick={() => handleEditWiki(wiki)} title='Edit'>✏️</button>{' '}
-          <button onClick={() => handleDeleteWiki(wiki.id, wiki.name)} title='Delete'>🗑️</button>
+          <EditButton onClick={() => handleEditWiki(wiki)} />{' '}
+          <DeleteButton onClick={() => handleDeleteWiki(wiki.id, wiki.name)} />
         </>}
         {editingWiki.id === wiki.id && <>
-          <input type='text' placeholder='label' value={editingWiki.name}
+          <input type='text' placeholder='name' value={editingWiki.name}
             onChange={(e) => setEditingWiki({...editingWiki, name: e.target.value})} required />
           <div>
-            <button onClick={() => handleSaveWiki(wiki.id)} title='Save'>💾</button>{' '}
-            <button onClick={handleCancelEditWiki} title='Cancel'>❌</button>
+            <SaveButton onClick={() => handleSaveWiki(wiki.id)} />{' '}
+            <CancelButton onClick={handleCancelEditWiki} />
           </div>
         </>}
       </li>)}</ul>}
@@ -99,7 +101,7 @@ const MainPage = ({ user, pageInfo, setPageInfo, wikisData, setWikisData }) => {
       <form onSubmit={handleCreateWiki}>
         <input type='text' placeholder='name' value={newWiki.name}
           onChange={(e) => setNewWiki({...newWiki, name: e.target.value})} required />
-        <button type='submit' title='Create'>✨</button>
+        <CreateButton />
       </form>
     </div>
   </>;

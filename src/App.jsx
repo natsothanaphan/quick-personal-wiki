@@ -8,7 +8,7 @@ import './App.css';
 const App = () => {
   const [user, setUser] = useState(null);
   const [pageInfo, setPageInfo] = useState({page: 'main'});
-  const [wikisData, setWikisData] = useState({wikis: {}});
+  const [wikisData, setWikisData] = useState({});
 
   if (!user) return <div className='app'><Auth onSignIn={setUser} /></div>;
   const { page } = pageInfo;
