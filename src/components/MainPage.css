@@ -1,0 +1,45 @@
+.wikis-search {
+  width: 100%;
+  max-width: 960px;
+  margin: 2px 0;
+}
+.wikis-search > input {
+  width: calc(100% - 2.4em - 2px);
+  max-width: calc(960px - 2.4em - 2px);
+}
+
+.wikis-list {
+  width: 100%;
+  max-width: 960px;
+  margin: 2px 0;
+}
+.wikis-list > ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+.wikis-list > ul > li {
+  word-break: break-all;
+}
+.wikis-list > ul > li > input {
+  width: calc(100% - 2.4em - 2px);
+  max-width: calc(960px - 2.4em - 2px);
+}
+
+.create-wiki {
+  width: 100%;
+  max-width: 960px;
+  margin: 2px 0;
+}
+.create-wiki > form {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.create-wiki > form > input {
+  width: calc(100% - 2.4em - 2px);
+  max-width: calc(960px - 2.4em - 2px);
+}
+.create-wiki > form > button {
+  align-self: flex-end;
+}
